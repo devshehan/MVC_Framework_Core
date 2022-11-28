@@ -28,6 +28,21 @@
 
             //instatiate controller class
             $this->currentController = new $this->currentController;
+            unset($url[0]);
+
+            //check the second part of the url
+            if(method_exists($this->currentController, $url[1])){
+                $this->currentMethod = $url[1];
+
+                //unset the second element of the array (method)
+                unset($url[1]);
+            }
+
+            //get the parameters
+            $this->params =  $url ? array_values($url) : [];
+
+            //call a back with a array of params
+            call_user_func_array([$this->currentController,$this->currentMethod], $this->params);
 
 
         }
